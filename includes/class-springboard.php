@@ -74,7 +74,7 @@ class SpringBoard {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_server_hooks();
-		$this->define_public_hooks();
+		$this->define_client_hooks();
 
 	}
 
@@ -117,7 +117,7 @@ class SpringBoard {
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-springboard-client.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'client/class-springboard-client.php';
 
 		
 		$this->loader = new SpringBoard_Loader();
@@ -151,7 +151,7 @@ class SpringBoard {
 
 		$plugin_server = new SpringBoard_Server( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'init', $plugin_server, 'setup_menu' );
+		$this->loader->add_action( 'admin_menu', $plugin_server, 'setup_menu' );
 	}
 
 	/**
