@@ -164,8 +164,8 @@ class SpringBoard {
 	private function define_client_hooks() {
 		$plugin_client = new SpringBoard_Client( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'server_enqueue_scripts', $plugin_client, 'enqueue_styles' );
-		$this->loader->add_action( 'server_enqueue_scripts', $plugin_client, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_client, 'enqueue_admin_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_client, 'enqueue_admin_scripts' );
 	}
 	
 	/**

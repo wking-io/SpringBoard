@@ -66,14 +66,14 @@ class SpringBoard_Server {
 	 * @since    1.0.0
 	 */
 	public function setup_menu() {
-    if ( class_exists( 'SpringBoard_Client' ) ) :
+		if ( class_exists( 'SpringBoard_Client' ) ) :
 
       $client = new SpringBoard_Client( $this->plugin_name, $this->version );
 
       add_menu_page( 
-        __( 'SpringBoard', 'skillcrush-lms-add-on' ),
-        __( 'SpringBoard', 'skillcrush-lms-add-on' ),
-        'springboard_manage_processes',
+        __( 'SpringBoard', $this->plugin_name ),
+        __( 'SpringBoard', $this->plugin_name ),
+        'manage_options',
         $this->slug,
         array( $client, 'setup_admin_page' )
       );
