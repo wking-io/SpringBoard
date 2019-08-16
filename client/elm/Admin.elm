@@ -3,46 +3,106 @@ module Admin exposing (main)
 import Browser
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
+import Time exposing (Posix)
 
 
-type alias Model = Bool
+type alias Model =
+    { processList : List Process }
 
+type Process
+    = Active ActiveData ProcessData
+    | Inactive InactiveData ProcessData
+
+type alias ProcessData =
+    { id: Id
+    , title : String
+    , description : String
+    }
+
+type alias ActiveData =
+    { lastActivity : Posix 
+    , progress : String
+    }
+
+type alias InactiveData =
+    { lastCompleted : Posix
+    , completedCount : Int
+    }
+
+type Id
+    = New
+    | Id String
+
+fakeProcessess : List Process
+fakeProcessess =
+    [
+        Active
+            { lastActivity = Time.millisToPosix 1565984035514
+            , progress = "12/20"
+            }
+            { id = Id "123456"
+            , title = "Weekly blog update for MegaMaker Community article"
+            , description = "Weekly blog update for MegaMaker Community article. Done once a week to make sure that new topics are covered."
+            }
+    ,   Inactive
+            { lastCompleted = Time.millisToPosix 1565984035514
+            , completedCount = 12
+            }
+            { id = Id "123457"
+            , title = "Weekly blog update for MegaMaker Community article"
+            , description = "Weekly blog update for MegaMaker Community article. Done once a week to make sure that new topics are covered."
+            }
+    ]
 
 init : () -> ( Model, Cmd Msg)
 init () =
-    (True, Cmd.none)
+    (Model fakeProcessess, Cmd.none)
 
 
 type Msg
-    = Hello
-    | Goodbye
+    = UserClickedCreateProcess
+    | UserUpdatedTitleField String
+    | UserUpdatedDescriptionField String
+    | UserSavedNewProcess ProcessData
+    | ServerReturnedSaveResponse
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
-        Hello ->
-            ( True, Cmd.none )
+        UserClickedCreateProcess ->
+            ( model, Cmd.none )
+        UserUpdatedTitleField title ->
+            ( model, Cmd.none )
+        UserUpdatedDescriptionField description ->
+            ( model, Cmd.none )
+        UserSavedNewProcess newProcess ->
+            ( model, Cmd.none )
+        ServerReturnedSaveResponse ->
+            ( model, Cmd.none )
 
-        Goodbye ->
-            ( False, Cmd.none )
+renderProcessList : Process -> Html Msg
+renderProcessList process =
+    case process of
+        Active activeData { id, title, description } -> 
+            Html.li [] [
+                Html.h3 [] [ Html.text title ]
+                , Html.p [] [ Html.text description ]
+            ]
 
-say : Bool -> List (Html Msg)
-say hello =
-  if hello then
-    [ Html.p [] [ Html.text "Hello there friend!"] 
-    , Html.button [ onClick Goodbye ] [ Html.text "Say goodbye 👋"]
-    ]
-  else
-    [ Html.p [] [ Html.text "See you later!"] 
-    , Html.button [ onClick Hello ] [ Html.text "Say hello 👋"]
-    ]
+        Inactive inactiveData { id, title, description } -> 
+            Html.li [] [
+                Html.h3 [] [ Html.text title ]
+                , Html.p [] [ Html.text description ]
+            ]
 
 view : Model -> Html Msg
 view model =
     div []
         [ Html.h1 [] [ Html.text "SpringBoard" ]
-        , div [] (say model)
+        , Html.div [] [
+            Html.ul [] (List.map renderProcessList model.processList)
+        ]
         ]
 
 subscriptions : Model -> Sub Msg
