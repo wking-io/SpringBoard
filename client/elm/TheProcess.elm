@@ -105,7 +105,7 @@ renderDetails (TheProcess { completions } preview) =
             ]
           , Html.div []
               [ Html.p [] [ Html.strong [] [ Html.text "Completions"] ]
-              , Html.p [] [ Html.text (Int.toString completions) ]
+              , Html.p [] [ Html.text (String.fromInt completions) ]
               ]
           ]
         ]
