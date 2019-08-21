@@ -9,6 +9,6 @@
   "author": "Will King <contact@wking.io> (https://www.wking.io/)",
   "devDependencies": {
     "elm": "0.19.0-no-deps",
-    "elm-live": "4.0.0-alpha.3"
+    "elm-live": "4.0.0-alpha.13"
   }
 }
