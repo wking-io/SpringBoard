@@ -1,9 +1,9 @@
-module TheProcess exposing (TheProcess, ProcessData, Preview, mock)
+module TheProcess exposing (TheProcess, ProcessData, Preview, mock, renderPreview)
 
 import Id exposing (Id)
 import Time exposing (Posix)
-import Html exposing (Html)
-import Html.Attributes exposing (class)
+import Html exposing (Html, Attribute)
+import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
 
 type TheProcess extraInfo
@@ -53,9 +53,9 @@ getDescription : TheProcess a -> String
 getDescription (TheProcess { description } _) =
   description
 
-getLink : TheProcess a -> String
-getLink (TheProcess { id } _) =
-  "replace with URL" ++ Id.toString id
+getLink : String -> TheProcess a -> Attribute msg
+getLink url (TheProcess { id } _) =
+  href (url ++ Id.toString id)
 
 previewToString : Preview -> String
 previewToString preview =
@@ -91,7 +91,7 @@ renderDetails (TheProcess { completions } preview) =
             ]
           , Html.div []
               [ Html.p [] [ Html.strong [] [ Html.text "Progress"] ]
-              , Html.p [] [ Html.text (completed ++ "/" ++ total) ]
+              , Html.p [] [ Html.text ((String.fromInt completed) ++ "/" ++ (String.fromInt total)) ]
               ]
           ]
         ]
@@ -110,13 +110,13 @@ renderDetails (TheProcess { completions } preview) =
           ]
         ]
 
-renderPreview : TheProcess Preview -> Html msg
-renderPreview process =
-  Html.div [] 
+renderPreview : String -> TheProcess Preview -> Html msg
+renderPreview url process =
+  Html.div [ class "sb-process" ] 
   [ renderStatus process
   , Html.h3 [] [ Html.text (getTitle process) ]
   , Html.p [] [ Html.text (getDescription process) ]
   , renderDetails process
-  , Html.a [ getLink process ] [ Html.text "Work On This Process" ]
+  , Html.a [ getLink url process ] [ Html.text "Work On This Process" ]
   ]
 

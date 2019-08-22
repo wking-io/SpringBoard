@@ -74,8 +74,8 @@ class SpringBoard_Client {
 	 * @since    1.0.0
 	 */
 	public function enqueue_admin_scripts() {
-		wp_enqueue_script( $this->plugin_name . '-elm-admin', plugin_dir_url( __FILE__ ) . 'js/elm-admin.js', array(), $this->version, true );
-		wp_enqueue_script( $this->plugin_name . '-admin', plugin_dir_url( __FILE__ ) . 'js/springboard-admin.js', array(), $this->version, true );
+		wp_enqueue_script( $this->plugin_name . '-index', plugin_dir_url( __FILE__ ) . 'dist/js/index.js', array(), $this->version, true );
+		wp_localize_script($this->plugin_name . '-index', 'context', array( 'url' => admin_url('/springboard' ) ) );
   }
   
 	/**
