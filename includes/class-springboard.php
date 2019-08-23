@@ -97,6 +97,11 @@ class SpringBoard {
 	private function load_dependencies() {
 
 		/**
+		 * Include composer deps
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+
+		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
@@ -109,15 +114,20 @@ class SpringBoard {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-springboard-i18n.php';
 
 		/**
+		 * The class responsible for handling API calls for the process resource.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'server/controllers/process.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the server area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'server/class-springboard-server.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'server/config.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'client/class-springboard-client.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'client/config.php';
 
 		
 		$this->loader = new SpringBoard_Loader();
@@ -149,9 +159,10 @@ class SpringBoard {
 	 */
 	private function define_server_hooks() {
 
-		$plugin_server = new SpringBoard_Server( $this->get_plugin_name(), $this->get_version() );
+		$plugin_server = new SpringBoard_Server_Config( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_menu', $plugin_server, 'setup_menu' );
+		$this->loader->add_action( 'rest_api_init', $plugin_server, 'register_routes' );
 	}
 
 	/**
@@ -162,7 +173,7 @@ class SpringBoard {
 	 * @access   private
 	 */
 	private function define_client_hooks() {
-		$plugin_client = new SpringBoard_Client( $this->get_plugin_name(), $this->get_version() );
+		$plugin_client = new SpringBoard_Client_Config( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_client, 'enqueue_admin_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_client, 'enqueue_admin_scripts' );
