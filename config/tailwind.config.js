@@ -1,9 +1,12 @@
 const colors = {
   transparent: 'transparent',
-  black: '#3b3b3b',
+  black: '#102A43',
   white: '#ffffff',
-  primary: '#40C3FF',
-  'primary-dark': '#1E90FF',
+  primary: {
+    light: '#40C3ff',
+    default: '#30abff',
+    dark: '#1E90ff',
+  },
   grey: {
     '100': '#F0F4F8',
     '200': '#D9E2EC',

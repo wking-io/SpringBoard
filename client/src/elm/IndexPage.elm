@@ -3,11 +3,12 @@ module IndexPage exposing (main)
 import Browser
 import Context exposing (Context)
 import Html exposing (Html)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Json.Decode as Decode exposing (Value)
 import Result
 import TheProcess exposing (TheProcess, Preview, ProcessData)
+import UI
 
 type PageModel
     = PageModel Context ( List (TheProcess Preview) )
@@ -53,11 +54,24 @@ view model =
             Html.div [] [ Html.text error ]
 
         Success (PageModel context processes) ->
-            Html.div []
-                [ Html.h1 [] [ Html.text "SpringBoard" ]
-                , Html.div [] [
-                    Html.ul [ class "flex flex-wrap justify-between" ] (List.map (TheProcess.renderPreview context.url) processes)
-                ]
+            Html.div [ class "font-sans text-black" ]
+                [ Html.nav [ class "flex items-center bg-white px-12 py-6 mb-8" ]
+                    [ Html.div [ class "flex-1 flex items-center"]
+                        [ UI.logo
+                        , Html.h1 [ class "text-xl font-bold ml-3" ] [ Html.text "SpringBoard" ]
+                        ]
+                    , Html.ul [ class "flex items-center" ]
+                        [ Html.li [ class "m-0 mr-8" ] [ Html.a [ href (context.url ++ "/wp-admin/admin.php?page=springboard"), class "sb-link text-base font-medium" ] [ Html.text "Process List" ] ]
+                        , Html.li [ class "m-0" ] [ Html.a [ href (context.url ++ "/wp-admin/admin.php?page=springboard-settings"), class "sb-link text-base font-medium" ] [ Html.text "Settings" ] ]
+                        ]
+                    ]
+                , Html.div [ class "bg-white p-12 mb-12" ]
+                    [ Html.h2 [ class "font-bold text-2xl mb-6" ] [ Html.text "Process List" ]
+                    , Html.div [] [ Html.text "Search, Filter and Create New will go here" ]
+                    ]
+                , Html.div [ class "px-12" ]
+                    [ Html.ul [ class "sb-process-wrapper" ] (List.map (TheProcess.renderPreview context.url) processes)
+                    ]
                 ]
 
 subscriptions : Model -> Sub Msg

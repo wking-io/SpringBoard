@@ -57,11 +57,6 @@ class SpringBoard_Client_Config {
 	 * @since    1.0.0
 	 */
 	public function enqueue_admin_styles( $hook ) {
-
-		if ( in_array( $hook, array( 'toplevel_page_springboard', 'springboard_page_springboard-settings' ) ) ) :
-			wp_enqueue_style( $this->plugin_name . '-common', plugin_dir_url( __FILE__ ) . 'dist/css/common.css', array(), '1.0.0', 'all' );
-		endif;
-
 		if ( $hook === 'toplevel_page_springboard' ) :
 			if ( isset( $_GET['processId'] ) ) :
 				wp_enqueue_style( $this->plugin_name . '-detail', plugin_dir_url( __FILE__ ) . 'dist/css/process-detail.css', array(), '1.0.0', 'all' );
